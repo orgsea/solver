@@ -1,4 +1,4 @@
-// Copyright (c) 2016, <your name>. All rights reserved. Use of this source code
+// Copyright (c) 2016, James Hurford. All rights reserved. Use of this source code
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
@@ -17,15 +17,13 @@
 1011: -
 1100: *
 1101: /
- */
+*/
 import 'dart:math';
 
 import 'package:math_expressions/math_expressions.dart';
 
 double fitness(String gene) {
-  var tokens = tokenise(gene);
-
-  var val = eval(compile(tokens));
+  var val = eval(compile(tokenise(gene)));
 
   if (val > 42.0) return -1.0;
 
@@ -71,19 +69,23 @@ List compile(List tokens) {
 
   var exp = [];
   var isNum = true;
-  tokens.map((item) => tokenMap.putIfAbsent(item, () => null)).toList().forEach((String item) {
-    if(isNum && item != null && new RegExp(r'\d').hasMatch(item)) {
+  tokens
+      .map((item) => tokenMap.putIfAbsent(item, () => null))
+      .forEach((String item) {
+    if (isNum && item != null && new RegExp(r'\d').hasMatch(item)) {
       exp.add(item);
       isNum = false;
-    } else if(!isNum && item != null && ['+', '-', '*', '/'].contains(item)) {
+    } else if (!isNum && item != null && ['+', '-', '*', '/'].contains(item)) {
       exp.add(item);
       isNum = true;
     }
   });
-  if(isNum && exp.isNotEmpty) {
+
+  if (isNum && exp.isNotEmpty) {
     exp.removeLast();
   }
-  if(exp.isEmpty) {
+
+  if (exp.isEmpty) {
     exp.add(0);
   }
 
